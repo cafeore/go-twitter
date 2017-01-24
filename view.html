@@ -1,0 +1,23 @@
+{{define "view"}}
+<html>
+<head>
+	<title>fukusan</title>
+</head>
+<body>
+	<p>ログイン</p>
+	<form action="/login" method="post">
+    	ユーザ名:<input type="text" name="username">
+    	パスワード:<input type="password" name="password">
+    	<input type="submit" value="ログイン">
+    	<input type="reset" value="リセット">
+	</form>
+	<p>新規登録</p>
+	<form action="/new" method="post">
+    	ユーザ名:<input type="text" name="username">
+    	パスワード:<input type="password" name="password">
+    	<input type="submit" value="新規登録">
+    	<input type="reset" value="リセット">
+    </form>
+</body>
+</html>
+{{end}}
