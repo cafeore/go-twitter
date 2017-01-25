@@ -1,0 +1,20 @@
+{{define "go"}}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+</head>
+<body>
+	<table border="1">
+		<thead>
+			<tr><th>アカウント</th><th>ツイート</th></tr>
+		</thead>
+		<tbody>
+			{{range .}}
+				<tr><td>{{.Account}}</td><td>{{.Body}}</td></tr>
+			{{end}}
+		</tbody>
+	</table>
+</body>
+</html>
+{{end}}
