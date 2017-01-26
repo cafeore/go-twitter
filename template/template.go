@@ -8,7 +8,7 @@ import (
 type Template struct{
 	Templates *template.Template
 }
-func NewTemplate(fileNames string)*Template{
+func NewTemplates(fileNames string)*Template{
 	return &Template{
 		template.Must(template.ParseGlob(fileNames)),		
 	}
