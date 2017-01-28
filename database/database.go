@@ -44,5 +44,52 @@ func GetTweets() []tweetData{
 		}
 		tweetList = append(tweetList,tweet)
     }
+    hoge.Close()
 	return tweetList
+}
+func GetUser(name string,pass string) bool{
+    var db *sql.DB
+    db, err := sql.Open("sqlite3", "./data.db")
+    if err != nil {
+        fmt.Println(err)
+        db.Close()
+    }
+    hoge,err := db.Query("SELECT * FROM user")
+    if err!=nil {
+        fmt.Println(err)
+    }
+    for hoge.Next(){
+        var username string
+        var password string
+        err = hoge.Scan(&username,&password)
+        if username == name && password == pass{
+            hoge.Close()
+            return true
+        }
+    }
+    hoge.Close()
+    return false
+}
+func CheckUser(name string,pass string) bool{
+    var db *sql.DB
+    db, err := sql.Open("sqlite3", "./data.db")
+    if err != nil {
+        fmt.Println(err)
+        db.Close()
+    }
+    hoge,err := db.Query("SELECT * FROM user")
+    if err!=nil {
+        fmt.Println(err)
+    }
+    for hoge.Next(){
+        var username string
+        var password string
+        err = hoge.Scan(&username,&password)
+        if username == name{
+            hoge.Close()
+            return true
+        }
+    }
+    hoge.Close()
+    return false
 }
