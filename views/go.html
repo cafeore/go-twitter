@@ -5,13 +5,17 @@
 	<meta charset="UTF-8">
 </head>
 <body>
+	<form action="/tweet" method="post">
+    	ツイートする<input type="text" name="tweetbody">
+    	<input type="submit" value="ツイート">
+	</form>
 	<table border="1">
 		<thead>
-			<tr><th>アカウント</th><th>ツイート</th></tr>
+			<tr><th>アカウント</th><th>ツイート</th><th>時間</th></tr>
 		</thead>
 		<tbody>
 			{{range .}}
-				<tr><td>{{.AccountName}}</td><td>{{.TweetBody}}</td></tr>
+				<tr><td>{{.AccountName}}</td><td>{{.TweetBody}}</td><td>{{.TweetTime}}</td></tr>
 			{{end}}
 		</tbody>
 	</table>
