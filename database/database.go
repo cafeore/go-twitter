@@ -65,7 +65,8 @@ func GetUser(name string,pass string) bool{
     for hoge.Next(){
         var username string
         var password string
-        err = hoge.Scan(&username,&password)
+        var id int
+        err = hoge.Scan(&id,&username,&password)
         if username == name && password == pass{
             user = username
             hoge.Close()
@@ -86,10 +87,14 @@ func CheckUser(name string,pass string) bool{
     if err!=nil {
         fmt.Println(err)
     }
+    if hoge == nil {
+        return false
+    }
     for hoge.Next(){
         var username string
         var password string
-        err = hoge.Scan(&username,&password)
+        var id int
+        err = hoge.Scan(&id,&username,&password)
         if username == name{
             fmt.Println(user);
             hoge.Close()
@@ -97,6 +102,7 @@ func CheckUser(name string,pass string) bool{
         }
     }
     hoge.Close()
+    MakeAccount(name,pass)
     return false
 }
 func MakeTweet(body string) {
@@ -112,5 +118,19 @@ func MakeTweet(body string) {
     q+= " (id,body)"
     q+= " VALUES"
     q+= " (\""+user+"\",\""+body+"\")"
+    db_exec(db,q)
+}
+func MakeAccount(name string , pass string){
+    var db *sql.DB
+    db, err := sql.Open("sqlite3", "./data.db")
+    if err != nil {
+        fmt.Println(err)
+        db.Close()
+    }
+    var q = ""
+    q = "INSERT INTO user "
+    q+= " (name,pass)"
+    q+= " VALUES"
+    q+= " (\""+name+"\",\""+pass+"\")"
     db_exec(db,q)
 }
