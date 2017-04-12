@@ -11,11 +11,13 @@
 	</form>
 	<table border="1">
 		<thead>
-			<tr><th>アカウント</th><th>ツイート</th><th>時間</th></tr>
+			<tr><th>アカウント</th><th>ツイート</th><th>時間</th><th>いいね</th><th>---</th></tr>
 		</thead>
 		<tbody>
 			{{range .}}
-				<tr><td>{{.AccountName}}</td><td>{{.TweetBody}}</td><td>{{.TweetTime}}</td></tr>
+				<tr><td>{{.AccountName}}</td><td>{{.TweetBody}}</td><td>{{.TweetTime}}</td><td>{{.Good}}</td><td>
+					<form action="/good" method="post"><input type="submit" value="いいね"></form>
+				</td></tr>
 			{{end}}
 		</tbody>
 	</table>

@@ -17,5 +17,6 @@ func main() {
     e.POST("/timeline",handler.Login())
     e.POST("/new",handler.CreateAccount())
     e.POST("/tweet",handler.Tweet())
+    e.POST("/good",handler.Good())
 	e.Start(":1323")
 }

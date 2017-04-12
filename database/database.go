@@ -22,6 +22,7 @@ type tweetData struct{
 	AccountName string
 	TweetBody string
     TweetTime string
+    Good int
 }
 var user string
 func GetTweets() []tweetData{
@@ -40,11 +41,13 @@ func GetTweets() []tweetData{
         var username string
         var body string
         var time string
-        err = hoge.Scan(&username,&body,&time)
+        var good int
+        err = hoge.Scan(&username,&body,&time,&good)
         tweet := tweetData{
 			username,
 			body,
             time,
+            good,
 		}
 		tweetList = append(tweetList,tweet)
     }
@@ -106,21 +109,37 @@ func CheckUser(name string,pass string) bool{
     return false
 }
 func MakeTweet(body string) {
+    if body != ""{
+        var db *sql.DB
+        db, err := sql.Open("sqlite3", "./data.db")
+        if err != nil {
+            fmt.Println(err)
+            db.Close()
+        }
+        fmt.Println(user);
+        var q = ""
+        q = "INSERT INTO tweets "
+        q+= " (id,body)"
+        q+= " VALUES"
+        q+= " (\""+user+"\",\""+body+"\")"
+        db_exec(db,q)
+    }
+}
+func MakeAccount(name string , pass string){
     var db *sql.DB
     db, err := sql.Open("sqlite3", "./data.db")
     if err != nil {
         fmt.Println(err)
         db.Close()
     }
-    fmt.Println(user);
     var q = ""
-    q = "INSERT INTO tweets "
-    q+= " (id,body)"
+    q = "INSERT INTO user "
+    q+= " (name,pass)"
     q+= " VALUES"
-    q+= " (\""+user+"\",\""+body+"\")"
+    q+= " (\""+name+"\",\""+pass+"\")"
     db_exec(db,q)
 }
-func MakeAccount(name string , pass string){
+func  GoodPlus() {
     var db *sql.DB
     db, err := sql.Open("sqlite3", "./data.db")
     if err != nil {
