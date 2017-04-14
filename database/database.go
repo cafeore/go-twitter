@@ -6,10 +6,7 @@ import (
     "fmt"
     "database/sql"
     _ "github.com/mattn/go-sqlite3"
-   // "net/http"
-	//"github.com/labstack/echo"
-    //"html/template"
-    //"io"
+  // "github.com/PuerkitoBio/goquery"
 )
 func db_exec(db *sql.DB, q string) {
     var _, err = db.Exec(q)
@@ -23,6 +20,7 @@ type tweetData struct{
 	TweetBody string
     TweetTime string
     Good int
+  TweetId int
 }
 var user string
 func GetTweets() []tweetData{
@@ -42,13 +40,15 @@ func GetTweets() []tweetData{
         var body string
         var time string
         var good int
-        err = hoge.Scan(&username,&body,&time,&good)
+        var tweetid int
+        err = hoge.Scan(&username,&body,&time,&good,&tweetid)
         tweet := tweetData{
-			username,
-			body,
+			      username,
+			      body,
             time,
             good,
-		}
+            tweetid,
+		    }
 		tweetList = append(tweetList,tweet)
     }
     hoge.Close()
@@ -119,11 +119,22 @@ func MakeTweet(body string) {
         fmt.Println(user);
         var q = ""
         q = "INSERT INTO tweets "
-        q+= " (id,body)"
+        q+= "( userid,body)"
         q+= " VALUES"
         q+= " (\""+user+"\",\""+body+"\")"
         db_exec(db,q)
     }
+   /* doc, err := goquery.NewDocument("https://github.com/PuerkitoBio/goquery")
+      if err != nil {
+          fmt.Print("url scarapping failed")
+      }
+      res, err := doc.Find("body").Html()
+      if err != nil {
+          fmt.Print("dom get failed")
+      }
+      for i:=0;i<len(res);i++{
+        fmt.Println(res[i])
+      }*/
 }
 func MakeAccount(name string , pass string){
     var db *sql.DB
@@ -139,7 +150,7 @@ func MakeAccount(name string , pass string){
     q+= " (\""+name+"\",\""+pass+"\")"
     db_exec(db,q)
 }
-func  GoodPlus() {
+func  GoodPlus(tweetId string) {
     var db *sql.DB
     db, err := sql.Open("sqlite3", "./data.db")
     if err != nil {
@@ -147,9 +158,8 @@ func  GoodPlus() {
         db.Close()
     }
     var q = ""
-    q = "INSERT INTO user "
-    q+= " (name,pass)"
-    q+= " VALUES"
-    q+= " (\""+name+"\",\""+pass+"\")"
+    q = "UPDATE tweets SET good = good + 1 WHERE id ="
+    q+= tweetId + ";"
+    fmt.Println(q)
     db_exec(db,q)
 }

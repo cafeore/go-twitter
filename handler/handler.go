@@ -48,7 +48,8 @@ func Tweet() echo.HandlerFunc{
 }
 func Good() echo.HandlerFunc{
 	return func(c echo.Context)error{
-		database.GoodPlus()
+    tweetId := c.FormValue("tweetid")
+		database.GoodPlus(tweetId)
 		return c.Render(http.StatusOK,"go",database.GetTweets())
 	}
 }
